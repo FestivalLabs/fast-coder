@@ -1,4 +1,6 @@
+# Large files
 source_code/
+data/
 
 # iPython
 .ipynb_checkpoints/
