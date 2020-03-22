@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [error, setError] = useState(null);
@@ -7,16 +7,19 @@ function App() {
   const [wasmGame, setWasmGame] = useState(null);
 
   useEffect(loadWasmGame, []);
-
-  async function loadWasmGame() {
-    try {
-      setLoading(true);
-      const wasm = await import('game');
-      setWasmGame(wasm);
-    } catch (err) {
-      setError(err);
+  function loadWasmGame() {
+    async function load() {
+      try {
+        setLoading(true);
+        const wasm = await import("game");
+        setWasmGame(wasm);
+      } catch (err) {
+        console.error(err);
+        setError(err);
+      }
+      setLoading(false);
     }
-    setLoading(false);
+    load();
   }
 
   return (
@@ -25,7 +28,7 @@ function App() {
         <p>Fast Coder</p>
         {loading && <Loader />}
         {error && <Error error={error} />}
-        {wasmGame && <Game wasm={wasmGame} />}
+        {<Game wasm={wasmGame} />}
       </header>
     </div>
   );
@@ -40,7 +43,11 @@ function Error() {
 };
 
 function Game(props) {
-  return <div onClick={props.wasm.greet}>Click me!</div>;
+  return (
+    <div>
+      <canvas id="game-canvas" height={400} width={600}/>
+    </div>
+  );
 };
 
 export default App;
